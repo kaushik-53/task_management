@@ -21,7 +21,10 @@ export default function Tasks() {
   }, [dispatch]);
 
   useEffect(() => {
-    socket = io('/', { transports: ['websocket'] });
+    const socketUrl = import.meta.env.VITE_API_URL 
+      ? import.meta.env.VITE_API_URL.split('/api')[0] 
+      : 'http://localhost:5000';
+    socket = io(socketUrl, { transports: ['websocket'] });
 
     socket.on('task:created', (task) => {
       dispatch(socketTaskCreated(task));
